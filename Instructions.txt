@@ -1,0 +1,7 @@
+Make sure Python 3.7 is installed on your system.
+
+Either double click the Main.py file to open in CMD/Powershell. Or load all files into ide of your choice and run through there.
+
+Make sure to have all files in the same directory
+
+I have included fresh CSV files in the fresh data folder.

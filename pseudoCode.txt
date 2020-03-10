@@ -1,0 +1,481 @@
+import csv
+import Pets
+import Treatments
+import Wild
+pet_data <- []
+wild_data <- []
+treatment_data <- []
+
+
+FUNCTION bubblesort takes in array
+    n <- len of array
+
+    for i in range(n)
+        for j in range(0, n - i - 1)
+            IF arr[j] > arr[j + 1]:
+                arr[j], arr[j + 1] <- arr[j + 1], arr[j]
+            ENDIF
+ENDFUNCTION
+
+FUNCTION menu
+    OUTPUT "1. Create a new animal entry "
+    OUTPUT "2. Search the Database "
+    OUTPUT "3. Search for person"          
+    OUTPUT "4. View list of pets ready for adoption"                     
+    OUTPUT "5. View list of animals ready to be returned to owner"                            
+    OUTPUT "0. Exit Program"
+
+    choose <- input
+    IF choose = 0
+        exit()
+    ELSEIF choose = 1
+        OUTPUT "A. Add a new Pet Entry"
+        OUTPUT "B. Add a new wild animal Entry "
+        OUTPUT "C. Add a treatment Entry "
+
+        option <- input()
+
+        IF option = A
+            add_pet()
+        ELSEIF option = B
+            add_wild()
+        ELSEIF option = C
+            add_treatment()
+        ELSE
+            menu()
+        ENDIF
+
+    ELSEIF choose = 2
+        searchID()
+    ELSEIF choose = 3
+        OUTPUT "A. List of people who have abused an animal in the past"
+        OUTPUT "B. List of people who have abandoned an animal in the past"
+        
+        option <- input()
+
+        IF option = A
+            reader_abused()
+        ELSEIF option = B
+            reader_abandoned()
+        ELSE:
+            menu()
+        ENDIF
+    ELSEIF choose = 4
+        OUTPUT "A. List of cats ready for adoption"
+        OUTPUT "B. List of dogs ready for adoption"
+        option <- input()
+        IF option = A
+            ready_for_adoption("Cat")
+        ELSEIF option = B
+            ready_for_adoption("Dog")
+        ELSE:
+            menu()
+        ENDIF
+    ELSEIF choose = 5
+        OUTPUT "List of animals ready to be returned to owner"
+        ready_for_return()
+    ELSEIF choose = 6
+        option <- input()
+        IF option = A
+            edit_menu_pet()
+        ELSEIF option = B
+            edit_menu_wild()
+        ELSE:
+            menu()
+        ENDIF
+    ELSEIF choose = 7
+        edit_menu_treat()
+    ENDIF
+ENDFUNCTION
+
+FUNCTION load data
+    open pet file
+        reader <- csv.reader(csv_file)
+        next(reader, None)
+        for row in reader:
+            pet_data.append
+        bubblesort(pet_data)
+        for row in pet_data:
+            OUTPUT row
+
+    open wild file
+        reader <- csv.reader(csv_file)
+        next(reader, None)
+        for row in reader:        
+            wild_data.append
+        bubblesort(wild_data)
+        for row in wild_data:
+            OUTPUT row
+
+    open treatment file
+        reader <- csv.reader(csv_file)
+        next(reader, None)
+        for row in reader:
+            treatment_data.append
+        bubblesort(treatment_data)
+        for row in treatment_data:
+            OUTPUT row
+ENDFUNCTION
+
+
+FUNCTION askYesNo question
+    previousQuestion <- question
+    OUTPUT "Is the animal " + question
+    OUTPUT "1. Yes"
+    OUTPUT "2. No"
+    option <- input
+    IF option = 1
+        outcome <- "Yes"
+        RETURN outcome
+    ELSEIF option = 2
+        outcome <- "empty"
+        RETURN outcome
+ENDFUNCTION
+
+FUNCTION add_pet
+    pet_id <- input
+    type_pet <- input
+    breed <- input
+    vaccinated <- askYesNo
+    neutered <- askYesNo
+    micro_chipped <- input
+    admission <- input
+    arrival <- input
+    departure <- input
+    destination <- input
+    destination_address <- input
+    row <- [pet_id, type_pet, breed, vaccinated, neutered, micro_chipped, admission,
+           arrival, departure, destination, destination_address]
+    open pet file
+        csv_writer <- csv.writer(csv_file)
+        csv_writer.writerow(row)
+        pet_data.append row
+        OUTPUT row
+ENDFUNCTION
+
+FUNCTION add_wild():
+    wild_id <- input
+    wild_type <- input
+    vaccinated <- askYesNo
+    admission_reason <- input
+    arrival <- input
+    departure <- input
+    destination <- input
+    destination_address <- inpu
+    row <- [wild_id, wild_type, vaccinated, admission_reason, arrival, departure,
+           destination, destination_address]
+    open wild file
+        csv_writer <- csv.writer(csv_file)
+        csv_writer.writerow(row)
+        wild_data.append
+        OUTPUT row
+ENDFUNCTION
+
+FUNCTION add_treatment():
+    treat_id <- input
+    treat_surgery <- input
+    surgery_date <- input
+    medication <- input
+    med_start <- input
+    med_end <- input
+    responsible_abuse <- input
+    responsible_abandoned <- input
+    row <- [treat_id, treat_surgery, surgery_date, medication, med_start, med_end, responsible_abuse,
+                 responsible_abandoned]
+    open treatment file
+        csv_writer <- csv.writer(csv_file)
+        csv_writer.writerow(row)
+        treatment_data.append
+        OUTPUT row
+ENDFUNCTION
+
+FUNCTION BinarySearch(lys, val):
+    first <- 0
+    last <- len(lys)-1
+    index <- -1
+    while (first <= last) AND (index = -1):
+        mid <- (first + last) // 2
+        IF lys[mid] = val:
+            index <- mid
+            RETURN lys[index]
+        ELSE:
+            IF val < lys[mid]
+                last <- mid -  1
+            ELSE:
+                first <- mid + 1
+        ENDIF
+            ENDIF
+    ENDWHILE
+    IF index = -1:
+        RETURN index
+    ENDIF
+ENDFUNCTION
+
+
+FUNCTION searchID():
+    animal <- BinarySearchPet(pet/wild/treatment data, input)
+    IF animal = -1:
+        animal <- BinarySearchWild(pet/wild/treatment data, input)
+    ENDIF
+    IF animal != -1:
+        OUTPUT animal
+        animalTreatment <- BinarySearchTreatment(pet/wild/treatment data, input)
+        IF animalTreatment = -1:
+            OUTPUT ""
+                                              
+        ELSE:
+            OUTPUT animalTreatment
+        ENDIF
+ENDFUNCTION
+
+
+FUNCTION reader_abused():
+    abuse_list
+    abandon_list
+
+    for i in treatment_data:
+        IF i.responsible_abuse != "" AND i.responsible_abuse not in abuse_list:
+            abuse_list.append
+        ENDIF
+
+    for i in treatment_data:
+        IF i.responsible_abandoned != "" and i.responsible_abuse not in abandon_list:
+            abandon_list.append
+    bubblesort(abuse_list)
+    OUTPUT abuse_list
+
+    bubblesort(abandon_list)
+    OUTPUT abandon_list
+
+
+FUNCTION ready_for_adoption
+    adoption_ready[]
+    for i in pet_data:
+        IF i.pet_type = type AND i.vaccinated != "" AND i.neutered != "" AND i.micro_chip != "":
+            adoption_ready.append(i.pet_id)
+    bubblesort(adoption_ready)
+    OUTPUT adoption_ready
+ENDFUNCTION
+
+FUNCTION ready_for_return():
+    return_ready <- []
+    for i in pet_data:
+        if "Return" in i.destination OR "RETURN" in i.destination:
+         ENDIF
+        ENDIF
+    ENDFOR
+    for i in wild_data:
+        if "Zoo" in i.destination OR "zoo" in i.destination:
+            return_ready.append(i.wild_id)
+        ENDIF
+    ENDFOR
+    bubblesort(return_ready)
+    OUTPUT return_ready
+ENDFUNCTION
+
+FUNCTION edit_pet(pet_id_to_edit):
+    IF pet file
+open pet file        lines <- list(c)
+        for row in lines:
+            IF row[0] = pet_id_to_edit.pet_id:
+                row[1] <- pet_id_to_edit.pet_type
+                row[2] <- pet_id_to_edit.breed
+                row[3] <- pet_id_to_edit.vaccinated
+                row[4] <- pet_id_to_edit.neutered
+                row[5] <- pet_id_to_edit.micro_chip
+                row[6] <- pet_id_to_edit.admission_reason
+                row[7] <- pet_id_to_edit.arrival
+                row[8] <- pet_id_to_edit.departure
+                row[9] <- pet_id_to_edit.destination
+                row[10] <- pet_id_to_edit.destination_address
+            ENDIF
+        ENDFOR
+        writer <- csv.writer pet file
+        writer.writerows(lines)
+        OUTPUT pet_id_to_edit
+    ENDIF
+    IF wild file
+        open wild file
+        lines <- list(c)
+        for row in lines:
+            IF row[0] = wild_id_to_edit.wild_id:
+                row[1] <- wild_id_to_edit.wild_type
+                row[2] <- wild_id_to_edit.vaccinated
+                row[3] <- wild_id_to_edit.admission_reason
+                row[4] <- wild_id_to_edit.arrival
+                row[5] <- wild_id_to_edit.departure
+                row[6] <- wild_id_to_edit.destination
+                row[7] <- wild_id_to_edit.destination_address
+            ENDIF
+        ENDFOR
+        writer <- csv.writer wild file
+        writer.writerows(lines)
+        OUTPUT wild_id_to_edit
+
+    IF treat file
+        c <- csv.reader(treat file)
+        lines <- list(c)
+        for row in lines:
+            IF row[0] = treat_id_to_edit.treat_id:
+                row[1] <- treat_id_to_edit.treat_surgery
+                row[2] <- treat_id_to_edit.surgery_date
+                row[3] <- treat_id_to_edit.medication
+                row[4] <- treat_id_to_edit.med_start
+                row[5] <- treat_id_to_edit.med_end
+                row[6] <- treat_id_to_edit.responsible_abuse
+                row[7] <- treat_id_to_edit.responsible_abandoned
+            ENDIF
+        ENDFOR
+        writer <- csv.writer treat file
+        writer.writerows(lines)
+        OUTPUT treat_id_to_edit
+ENDFUNCTION
+
+
+
+FUNCTION edit_menu():
+    animal <- BinarySearch
+    IF animal not available
+        edit_menu
+    ENDIF
+    IF pet file
+        input line to edit, 1-10
+            n <- input("\n Please choose an option: ")
+            IF n = "1":
+                OUTPUT "Add your new detail here: "
+                pet_type <- input()
+                pet.pet_type <- pet_type
+                edit_pet(pet)
+            ELSEIF n = "2":
+                optionCoen <- True
+                OUTPUT "Add your new detail here: "
+                breed <- input()
+                pet.breed <- breed
+                edit_pet(pet)
+            ELSEIF n = "3":
+                OUTPUT "Add your new detail here: "
+                vaccinated <- input()
+                pet.vaccinated <- vaccinated
+                edit_pet(pet)
+            ELSEIF n = "4":
+                OUTPUT "Add your new detail here: "
+                neutered <- input()
+                pet.neutered <- neutered
+                edit_pet(pet)
+            ELSEIF n = "5":
+                OUTPUT "Add your new detail here: "
+                micro_chip <- input()
+                pet.micro_chip <- micro_chip
+                edit_pet(pet)
+            ELSEIF n = "6":
+                OUTPUT "Add your new detail here: "
+                admission_reason <- input()
+                pet.admission_reason <- admission_reason
+                edit_pet(pet)
+            ELSEIF n = "7":
+                OUTPUT "Add your new detail here: "
+                arrival <- input()
+                pet.arrival <- arrival
+                edit_pet(pet)
+            ELSEIF n = "8":
+                OUTPUT "Add your new detail here: "
+                departure <- input()
+                pet.departure <- departure
+                edit_pet(pet)
+            ELSEIF n = "9":
+                OUTPUT "Add your new detail here: "
+                destination <- input()
+                pet.destination <- destination
+                edit_pet(pet)
+            ELSEIF n = "10":
+                OUTPUT "Add your new detail here: "
+                OUTPUT "I'm going to malaysia"
+                destination_address <- input()
+                pet.destination_address <- destination_address
+                edit_pet(pet)
+            ENDIF
+    ENDIF
+    IF wild file
+        input line to edit, 1-7
+            n <- input("\n Please choose an option: ")
+            IF n = "1":
+                OUTPUT "Add your new detail here: "
+                wild_type <- input()
+                wild.wild_type <- wild_type
+                edit_wild(wild)
+            ELSEIF n = "2":
+                OUTPUT "Add your new detail here: "
+                breed <- input()
+                wild.breed <- breed
+                edit_wild(wild)
+            ELSEIF n = "3":
+                OUTPUT "Add your new detail here: "
+                vaccinated <- input()
+                wild.vaccinated <- vaccinated
+                edit_wild(wild)
+            ELSEIF n = "4":
+                OUTPUT "Add your new detail here: "
+                neutered <- input()
+                wild.neutered <- neutered
+                edit_wild(wild)
+            ELSEIF n = "5":
+                OUTPUT "Add your new detail here: "
+                micro_chip <- input()
+                wild.micro_chip <- micro_chip
+                edit_wild(wild)
+            ELSEIF n = "6":
+                OUTPUT "Add your new detail here: "
+                admission_reason <- input()
+                wild.admission_reason <- admission_reason
+                edit_wild(wild)
+            ELSEIF n = "7":
+                OUTPUT "Add your new detail here: "
+                arrival <- input()
+                wild.arrival <- arrival
+                edit_wild(wild)
+            ENDIF
+    ENDIF
+    IF treatment file
+        input line to edit, 1-10
+            n <- input("\n Please choose an option: ")
+            IF n = "1":
+                OUTPUT "Add your new detail here: "
+                treat_surgery <- input()
+                treat.treat_surgery <- treat_surgery
+                edit_treat(treat)
+            ELSEIF n = "2":
+                OUTPUT "Add your new detail here: "
+                surgery_date <- input()
+                treat.surgery_date <- surgery_date
+                edit_treat(treat)
+            ELSEIF n = "3":
+                OUTPUT "Add your new detail here: "
+                medication <- input()
+                treat.medication <- medication
+                edit_treat(treat)
+            ELSEIF n = "4":
+                OUTPUT "Add your new detail here: "
+                med_start <- input()
+                treat.med_start <- med_start
+                edit_treat(treat)
+            ELSEIF n = "5":
+                OUTPUT "Add your new detail here: "
+                med_end <- input()
+                treat.med_end <- med_end
+                edit_treat(treat)
+            ELSEIF n = "6":
+                OUTPUT "Add your new detail here: "
+                responsible_abuse <- input()
+                treat.responsible_abuse <- responsible_abuse
+                edit_treat(treat)
+            ELSEIF n = "7":
+                OUTPUT "Add your new detail here: "
+                responsible_abandon <- input()
+                treat.responsible_abandon <- responsible_abandon
+                edit_treat(treat)
+            ENDIF
+    ENDIF
+ENDFUNCTION
+
+loadData(pet wild treatment)
+menu
